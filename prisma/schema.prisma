@@ -1,0 +1,41 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id        String     @id // This will be the Clerk User ID
+  email     String     @unique
+  createdAt DateTime   @default(now())
+  analyses  Analysis[]
+  
+  // Lemon Squeezy Subscription Fields
+  subscriptionId    String?
+  customerId        String?
+  variantId         String?
+  status            String? // "active", "past_due", "unpaid", "cancelled", "expired"
+}
+
+model Analysis {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  imageUrl  String   // We'll store the base64 or URL here. For MVP base64 is large but okay for small scale, or we just store the result and not the image if too big. Ideally Supabase Storage.
+  // For this MVP, let's assume we store the analysis result which contains the text.
+  // If we want to store the image, we might need a separate storage solution or store base64 text if it fits (Postgres text limit is high).
+  // Let's store the image as Text for now, but be wary of size.
+  
+  score     Int
+  summary   String
+  result    Json     // Stores the full JSON analysis result
+  context   Json?    // Stores the user provided context (platform, etc)
+  createdAt DateTime @default(now())
+}
