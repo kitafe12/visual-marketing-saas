@@ -8,7 +8,7 @@ import { fr } from 'date-fns/locale';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Download, Share2 } from 'lucide-react';
-import { AnalysisResults } from '@/components/analysis-results';
+
 
 export const dynamic = 'force-dynamic';
 
@@ -124,8 +124,8 @@ export default async function AnalysisDetailPage({ params }: PageProps) {
                         {result.recommendations.map((rec, i) => (
                             <div key={i} className="flex items-start gap-4 p-4 rounded-xl bg-gray-50 dark:bg-gray-800/50">
                                 <div className={`px-2 py-1 rounded text-xs font-bold uppercase tracking-wider ${rec.impact === 'high' ? 'bg-red-100 text-red-700' :
-                                        rec.impact === 'medium' ? 'bg-yellow-100 text-yellow-700' :
-                                            'bg-blue-100 text-blue-700'
+                                    rec.impact === 'medium' ? 'bg-yellow-100 text-yellow-700' :
+                                        'bg-blue-100 text-blue-700'
                                     }`}>
                                     {rec.impact}
                                 </div>
